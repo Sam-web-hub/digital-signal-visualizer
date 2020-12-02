@@ -97,12 +97,17 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./src/js/utils.js");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_utils__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _formulas__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./formulas */ "./src/js/formulas.js");
+/* harmony import */ var _formulas__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_formulas__WEBPACK_IMPORTED_MODULE_1__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+
+ // import style, {addStyle, style} from './style'
+// addStyle();
 
 var canvas = document.querySelector('canvas');
 var c = canvas.getContext('2d');
@@ -127,9 +132,14 @@ addEventListener('resize', function () {
   init();
 });
 
-document.querySelector("body > input[type=submit]:nth-child(6)").onclick = function () {
+document.getElementById("button").onclick = function () {
   BINARY = Object(_utils__WEBPACK_IMPORTED_MODULE_0__["getInputValue"])();
-  drawBoard();
+
+  if (50 * BINARY.length + 50 > WIDTH) {
+    WIDTH = 50 * BINARY.length + 100;
+  }
+
+  init();
 }; // Objects
 
 
@@ -172,38 +182,126 @@ function drawBoard() {
   c.lineTo(5, HEIGHT - 5);
   c.lineTo(5, 5);
   c.stroke();
+  c.closePath();
   c.beginPath();
   c.moveTo(5, HEIGHT / 2);
   c.lineTo(WIDTH - 5, HEIGHT / 2);
-  c.lineWidth = 3;
+  c.setLineDash([10, 5]);
+  c.lineWidth = 2;
   c.stroke();
-  c.beginPath();
-  c.lineWidth = .5;
+  c.closePath();
 
-  for (var i = 50; i < 50 * BINARY.length + 50; i += 50) {
+  for (var i = 50, j = 0; i <= 50 * BINARY.length + 50; i += 50, j++) {
+    c.beginPath();
+    c.lineWidth = .5;
+    c.setLineDash([0, 0]);
     c.moveTo(i, 5);
     c.lineTo(i, HEIGHT - 5);
     c.stroke();
+    c.closePath();
+    drawNumbers(i, j);
   }
-} // Implementation
-// let objects
 
+  c.beginPath();
+  c.moveTo(5, HEIGHT / 2 + 50);
+  c.lineTo(WIDTH - 5, HEIGHT / 2 + 50);
+  c.setLineDash([10, 5]);
+  c.lineWidth = 2;
+  c.stroke();
+  c.closePath();
+  c.beginPath();
+  c.moveTo(5, HEIGHT / 2 - 50);
+  c.lineTo(WIDTH - 5, HEIGHT / 2 - 50);
+  c.setLineDash([10, 5]);
+  c.lineWidth = 2;
+  c.stroke();
+  c.closePath();
+}
+
+function drawNumbers(i, j) {
+  c.font = 'bold 20px sans-serif';
+  if (j < BINARY.length) c.fillText(BINARY.charAt(j) + "", i + 25, 30);
+}
 
 function init() {
+  canvas.width = WIDTH;
   drawBoard();
+  Object(_formulas__WEBPACK_IMPORTED_MODULE_1__["NRZI"])(c, BINARY, HEIGHT, WIDTH);
 } // Animation Loop
 
 
 function animate() {
   requestAnimationFrame(animate);
   c.clearRect(0, 0, canvas.width, canvas.height);
-  c.fillText('HTML CANVAS BOILERPLATE', mouse.x, mouse.y); // objects.forEach(object => {
-  //  object.update()
-  // })
+  c.fillText('HTML CANVAS BOILERPLATE', mouse.x, mouse.y);
 }
 
 init(); // drawBoard()
 // animate()
+
+/***/ }),
+
+/***/ "./src/js/formulas.js":
+/*!****************************!*\
+  !*** ./src/js/formulas.js ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function uniPolarNRZ(c, BINARY, HEIGHT, WIDTH) {
+  c.beginPath();
+  c.lineWidth = 2;
+  c.setLineDash([0, 0]);
+  c.strokeStyle = 'red';
+  c.moveTo(50, HEIGHT / 2);
+
+  for (var i = 50, j = 0; j < BINARY.length; i += 50, j++) {
+    if (BINARY.charAt(j) == 1) {
+      c.lineTo(i, HEIGHT / 2 - 50);
+      c.lineTo(i + 50, HEIGHT / 2 - 50);
+    } else {
+      c.lineTo(i, HEIGHT / 2);
+      c.lineTo(i + 50, HEIGHT / 2);
+    }
+  }
+
+  c.stroke();
+  c.closePath();
+}
+
+function NRZI(c, BINARY, HEIGHT, WIDTH) {
+  var inverse = true;
+  var currentlvl = HEIGHT / 2;
+  c.beginPath();
+  c.lineWidth = 2;
+  c.setLineDash([0, 0]);
+  c.strokeStyle = 'red';
+  c.moveTo(50, HEIGHT / 2);
+
+  for (var i = 50, j = 0; j < BINARY.length; i += 50, j++) {
+    if (BINARY.charAt(j) == 1 && inverse) {
+      c.lineTo(i, HEIGHT / 2 - 50);
+      c.lineTo(i + 50, HEIGHT / 2 - 50);
+      inverse = false;
+      currentlvl = HEIGHT / 2 - 50;
+    } else if (BINARY.charAt(j) == 1 && !inverse) {
+      c.lineTo(i, HEIGHT / 2 + 50);
+      c.lineTo(i + 50, HEIGHT / 2 + 50);
+      inverse = true;
+      currentlvl = HEIGHT / 2 + 50;
+    } else {
+      c.lineTo(i + 50, currentlvl);
+    }
+  }
+
+  c.stroke();
+  c.closePath();
+}
+
+module.exports = {
+  uniPolarNRZ: uniPolarNRZ,
+  NRZI: NRZI
+};
 
 /***/ }),
 

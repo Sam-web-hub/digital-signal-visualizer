@@ -1,20 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Digital Signal Visualizer</title>
-    <style>
-      body {
-        margin: 0;
-      }
-    </style>
-  <link rel="icon" href="favicon.ico"></head>
-  <body>
 
+<head>
+  <meta charset="UTF-8" />
+  <title>Digital Signal Visualizer</title>
+  <style>
+    body {
+      margin: 0;
+    }
 
-      <input type="text" id="binary" ><br><br>
-      <input type="submit" value="Submit">
+    .container {
+      display: flex;
+	    flex-wrap: wrap;
+	    justify-content: center;
+    }
+    .button-1 {
+      background-color: #0d0c0e;
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 20px;
+      height: 5%;
+      width: 10%;
 
-    <canvas></canvas>
-  <script src="./js/canvas.bundle.js"></script></body>
+    }
+
+    #binary {
+      width: 50%;
+      height: 50px;
+      /* height: 30px; */
+      background-color: rgba(139, 132, 132, 0.5);
+      /* background-image: url('searchicon.png'); */
+      background-position: 10px 10px;
+      background-repeat: no-repeat;
+      padding-left: 20px;
+      font-size: 30px;
+
+    }
+
+    /* .submit:focus {
+      width: 1em;
+    } */
+
+    .enter {
+      font-size: 50px;
+      padding: 0%;
+      margin: 0%;
+    }
+
+    
+    canvas {
+      background-color: rgba(255, 255, 255, 0.5);
+      position:absolute;                  
+      bottom:0;                          
+      left:0; 
+    }
+  </style>
+<link rel="icon" href="favicon.ico"></head>
+
+<body>
+  <div class="container">
+    <p class="enter">Enter the value: </p><br><br>
+    <input type="text" id="binary"><br><br>
+    <input class="button-1" id="button" type="submit" value="Submit"><br><br>
+    Select: <br>
+		<select name="Warframe">
+			<option value="Comp" name="Comp">Comp</option>
+			<option value="Comp" name="Comp">Comp</option>
+			<option value="Comp" name="Comp">Comp</option>
+			<option value="Comp" name="Comp">Comp</option>
+			<option value="Comp" name="Comp">Comp</option>
+		</select><br>
+  </div>
+  <canvas></canvas>
+<script src="./js/canvas.bundle.js"></script></body>
+
 </html>

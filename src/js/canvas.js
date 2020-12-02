@@ -1,11 +1,13 @@
 import utils, { getInputValue, randomIntFromRange } from './utils'
+import formulas, { uniPolarNRZ , NRZI } from './formulas'
+// import style, {addStyle, style} from './style'
 
-
+// addStyle();
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
 const HEIGHT = 300
-const WIDTH = innerWidth
+let WIDTH = innerWidth
 
 let BINARY = "";
 canvas.width = WIDTH
@@ -31,9 +33,12 @@ addEventListener('resize', () => {
   init()
 })
 
-document.querySelector("body > input[type=submit]:nth-child(6)").onclick =()=> {  
+document.getElementById("button").onclick =()=> {  
 BINARY =  getInputValue()
-drawBoard()
+if(((50*BINARY.length)+50)>WIDTH){
+WIDTH=(50*BINARY.length)+100
+}
+init()
   };  
 
 // Objects
@@ -68,28 +73,62 @@ function drawBoard() {
   c.lineTo(5,HEIGHT-5)
   c.lineTo(5,5)
   c.stroke();
-  
+  c.closePath()
+
   c.beginPath();
   c.moveTo(5, HEIGHT / 2)
   c.lineTo(WIDTH-5,HEIGHT / 2)
-  c.lineWidth = 3
+  c.setLineDash([10, 5])
+  c.lineWidth = 2
   c.stroke();
- 
-  c.beginPath();
-  c.lineWidth = .5
-  for (let i = 50; i <(50*BINARY.length)+50; i += 50) 
+   c.closePath()
+
+  
+  for (let i = 50,j=0; i <=(50*BINARY.length)+50; i += 50,j++) 
   {
+    c.beginPath();
+  c.lineWidth = .5
+  c.setLineDash([0, 0])
   c.moveTo(i, 5);
   c.lineTo(i,HEIGHT -5);
   c.stroke();
+  c.closePath()
+  drawNumbers(i,j)
  }
+
+ c.beginPath();
+ c.moveTo(5, (HEIGHT / 2 )+50)
+ c.lineTo(WIDTH-5,(HEIGHT / 2 )+50)
+ c.setLineDash([10, 5])
+ c.lineWidth = 2
+ c.stroke();
+  c.closePath()
+
+
+  c.beginPath();
+  c.moveTo(5, (HEIGHT / 2 )-50)
+  c.lineTo(WIDTH-5,(HEIGHT / 2 ) - 50)
+  c.setLineDash([10, 5])
+  c.lineWidth = 2
+  c.stroke();
+   c.closePath()
+
+
 }
 
-// Implementation
-// let objects
+function drawNumbers(i,j){
+   
+  c.font = 'bold 20px sans-serif';
+  if(j<BINARY.length)
+  c.fillText(BINARY.charAt(j)+"", i+25, 30)
+}
+
+
+
 function init() {
+  canvas.width = WIDTH
   drawBoard()
- 
+ NRZI(c,BINARY,HEIGHT,WIDTH)
   }
 
 
@@ -99,9 +138,7 @@ function animate() {
   c.clearRect(0, 0, canvas.width, canvas.height)
 
   c.fillText('HTML CANVAS BOILERPLATE', mouse.x, mouse.y)
-  // objects.forEach(object => {
-  //  object.update()
-  // })
+
 }
 
 init()
