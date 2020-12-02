@@ -7,37 +7,51 @@
   <style>
     body {
       margin: 0;
+      background-color: #1db3747e;
     }
 
     .container {
       display: flex;
 	    flex-wrap: wrap;
-	    justify-content: center;
+	    justify-content: left;
+      margin-top: 1%;
     }
+
+    .container-1 {
+      display: flex;
+	    flex-wrap: wrap;
+	    justify-content: left;
+      margin-top: 1%;
+    }
+
     .button-1 {
       background-color: #0d0c0e;
       border: none;
       color: white;
-      padding: 15px 32px;
+      padding: 1px 22px;
       text-align: center;
       text-decoration: none;
       display: inline-block;
-      font-size: 20px;
-      height: 5%;
-      width: 10%;
+      font-size: 15px;
+      border-radius: 4px;
+      border: 2px solid #E2EAFC;
+      cursor: pointer;
 
+    }
+
+    .button-1:hover{
+      transform: scale(1.1)
     }
 
     #binary {
       width: 50%;
-      height: 50px;
-      /* height: 30px; */
-      background-color: rgba(139, 132, 132, 0.5);
-      /* background-image: url('searchicon.png'); */
+      height: 20px; 
+      background-color: #E2EAFC;
+      background-image: url('searchicon.png');
       background-position: 10px 10px;
       background-repeat: no-repeat;
-      padding-left: 20px;
-      font-size: 30px;
+      padding-left: 10px;
+      font-size: 15px;
 
     }
 
@@ -46,9 +60,22 @@
     } */
 
     .enter {
-      font-size: 50px;
+      font-size: 20px;
       padding: 0%;
-      margin: 0%;
+      margin-left: 1%;
+      margin-right: 0.5%;
+    } 
+
+    .select {
+      font-size: 20px;
+      padding: 0%;
+      margin-left: 1%;
+      margin-right: 0.5%;
+    }
+
+    select {
+      width: 25%;
+      background-color: #E2EAFC;
     }
 
     
@@ -63,18 +90,22 @@
 
 <body>
   <div class="container">
-    <p class="enter">Enter the value: </p><br><br>
+    <div class="enter">Enter the value: </div><br><br>
     <input type="text" id="binary"><br><br>
     <input class="button-1" id="button" type="submit" value="Submit"><br><br>
-    Select: <br>
-		<select name="Warframe">
-			<option value="Comp" name="Comp">Comp</option>
-			<option value="Comp" name="Comp">Comp</option>
-			<option value="Comp" name="Comp">Comp</option>
-			<option value="Comp" name="Comp">Comp</option>
-			<option value="Comp" name="Comp">Comp</option>
-		</select><br>
   </div>
+    <div class="container-1">
+      <div class="select">Select: <br></div>
+		  <select name="Warframe">
+
+      <!-- "Comp" here is any component -->
+			  <option value="Comp" name="Comp">Comp</option>
+			  <option value="Comp" name="Comp">Comp</option>
+			  <option value="Comp" name="Comp">Comp</option>
+			  <option value="Comp" name="Comp">Comp</option>
+        <option value="Comp" name="Comp">Comp</option>
+      </select><br>
+    </div>
   <canvas></canvas>
 <script src="./js/canvas.bundle.js"></script></body>
 
